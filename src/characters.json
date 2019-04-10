@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "image": "./images/bbking.jpeg"
+  },
+  {
+    "id": 2,
+    "image": "./images/blindwillie.jpg"
+	},
+	{
+    "id": 3,
+    "image": "./images/bowie.jpg"
+	},
+	{
+    "id": 4,
+    "image": "./images/frusciante.jpg"
+	},
+	{
+    "id": 5,
+    "image": "./images/jack.jpg"
+	},
+	{
+    "id": 6,
+    "image": "./images/jimi.jpg"
+	},
+	{
+    "id": 7,
+    "image": "./images/johnlennon.jpg"
+	},
+	{
+    "id": 8,
+    "image": "./images/johnnycash.jpg"
+	},
+	{
+    "id": 9,
+    "image": "./images/neil.jpg"
+	},
+	{
+    "id": 10,
+    "image": "./images/paul.jpg"
+	},
+	{
+    "id": 11,
+    "image": "./images/prince1.jpg"
+	},
+	{
+    "id": 12,
+    "image": "./images/tompetty.jpeg"
+	}
+]

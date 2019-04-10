@@ -1,81 +1,84 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import PictureCard from "./components/PictureCard";
+import React, { Component } from "react";
+import { Shake } from "reshake";
+import CharacterCard from "./components/CharacterCard";
 import Wrapper from "./components/Wrapper";
-import cards from "./cards.json";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import characters from "./characters.json";
+import Instructions from "./components/Instructions";
+import ScoreBoard from "./components/ScoreBoard";
+
 
 class App extends Component {
-  // Setting this.state.cards to the cards json array
-  state = {
-    cards,
-    clickedArray: [],
-    topScore: 0,
-    score: 0,
-    message: "",
-    shakeit: "false"
-  };
-  clickPicture = id => {
-    // Arrange the pictures in a random manner
-    const shuffledArray = this.shuffleArray(cards);
-    this.setState({cards: shuffledArray});
-    // if clicked an image already clicked set this.state.score = 0; empty clickeadArray, end of if block
-    if (this.state.clickedArray.includes(id)) {
-      this.setState({ score: 0, clickedArray: [], message: "Incorrect!! Game Over ☹️ Click an image to start again!", shakeit: "true"});
-    }
-    else {
-      this.setState({
-        clickedArray: this.state.clickedArray.concat([id]),
-        score: this.state.score + 1,
-        message: "Correct!! 🙂",
-        shakeit: "false"
-      });
-    }
-    // set topscore = score if score>topscore.
-    if (this.state.score > this.state.topScore) {
-      this.setState({ topScore: this.state.score });
-    }
-    // shake the wrapper if shakeit is set to true
-  }
-  shuffleArray = (picturesArray) => {
-      for (let i = picturesArray.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [picturesArray[i], picturesArray[j]] = [picturesArray[j], picturesArray[i]];
-      }
-      return picturesArray;
-  }
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to Clicky Game!!</h1>
-        </header>
-        <h3 className="App-intro">
-          <strong>Click on an image to earn points, but don't click on any, more than once!</strong> 
-          <p className = "score"><strong>Score: {this.state.score} | TopScore: {this.state.topScore}</strong></p>
-          <p className="message"><strong>{this.state.message}</strong></p>
-        </h3>
-        <Wrapper
-        shakeWrapper = {this.state.shakeit}
-        pictures=
-          {this.state.cards.map(picture => (
-            <PictureCard
-              clickPicture={this.clickPicture}
-              id={picture.id}
-              key={picture.id} // to get rid of unique key prop warning
-              name={picture.name}
-              image={picture.image}
-            />
-          ))}
-        />
-        <footer className="footer">
-      <div className="container">
-        <span className="text-muted">&copy;Robert Morris</span>
-      </div>
-    </footer> 
-      </div>
-    );
-  }
+
+	// Set our state variables
+	state = {
+		guessArray: [],
+		message: "Click image to begin!",
+		score: 0,
+		topScore: 0,
+		shake: 0
+	};
+	// Card is clicked
+	clickCard = card => {
+		let guessArray = this.state.guessArray;
+		let score = this.state.score;
+		// If we already clicked this card...
+		if (guessArray[card.id]) {
+			this.setState({
+				message: "Game Over!",
+				topScore: Math.max(this.state.score, this.state.topScore),
+				guessArray: [],
+				score: 0,
+				shake: 0.55      // Shake screen for 0.75 seconds
+			})
+			// Otherwise it was a good guess!
+		}
+		else {
+			guessArray[card.id] = true;
+			this.setState({
+				message: "Good Job!",
+				guessArray: guessArray,
+				score: ++score,
+				shake: 0
+			}, () => {
+				if (this.state.score === 12) {
+					this.setState({
+						message: "You Won!",
+						topScore: Math.max(this.state.score, this.state.topScore),
+						guessArray: [],
+						score: 0,
+					})
+				}
+			})
+		}
+	}
+	// Render the page
+	render() {
+		return (
+			<div>
+				<Navbar message={this.state.message} />
+				<Instructions />
+				<ScoreBoard
+					score={this.state.score}
+					topScore={this.state.topScore} />
+				{/* Use "reshake" to shake the page on a wrong answer */}
+				<Shake h={25} v={10} r={5} q={this.state.shake} dur={650} int={2.6} max={40} fixed={true} fixedStop={false} freez={false}>
+					<Wrapper>
+						{characters
+							.sort((a, b) => 0.5 - Math.random())
+							.map(randomCard => (
+								<CharacterCard
+									clickCard={this.clickCard}
+									id={randomCard.id}
+									key={randomCard.id}
+									image={randomCard.image} />))}
+					</Wrapper>
+				</Shake>
+				<Footer />
+			</div>
+		);
+	}
 }
+
 export default App;

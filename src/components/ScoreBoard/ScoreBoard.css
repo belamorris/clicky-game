@@ -1,0 +1,12 @@
+
+.stickyScoreBoard {
+	padding: 5px;
+	position: fixed;
+	bottom: center;
+	left: 20px;
+	background-color: steelblue;
+}
+hr{
+	background-color: white;
+	border: solid 2px white;
+}
