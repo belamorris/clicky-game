@@ -1,3 +1,6 @@
+# Clicky-game
+In this react app you click on and image and then the images are shuffled and you have to use your memory to not click on them again.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
